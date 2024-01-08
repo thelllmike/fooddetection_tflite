@@ -1,0 +1,8 @@
+0 club_sandwich
+1 clam_chowder
+2 churros
+3 chocolate_mousse
+4 chocolate_cake
+5 chicken_wings
+6 chicken_quesadilla
+7 chicken_curry
