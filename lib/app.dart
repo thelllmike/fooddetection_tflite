@@ -19,7 +19,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Nutrition Tracker',
       theme: ThemeData.light(),
-      home: const LoginScreen(),
+      home: const PlantRecogniser(),
      // home: const PlantRecogniser(),
       debugShowCheckedModeBanner: false,
     );

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 import 'package:image_picker/image_picker.dart';
 import '../classifier/classifier.dart';
-import '../styles.dart';
+import '../styles.dart'; // Assuming this file contains the provided constants
 import 'photo_view.dart';
 
 const _labelsFileName = 'assets/labels.txt';
@@ -34,6 +34,19 @@ class _PlantRecogniserState extends State<PlantRecogniser> {
   double _accuracy = 0.0;
 
   late Classifier _classifier;
+
+  // Nutrition Information Map
+  // ignore: lines_longer_than_80_chars
+  Map<String, String> nutritionInfo = {
+    'club_sandwich': 'Calories: 350-500 kcal , Protein: 20-30 grams , ', 
+    'clam_chowder': 'Calories: 300 kcal , Protein: 215 grams.', 
+    'churros': 'Calories: 150 kcal , Protein: 2 grams', 
+    'chocolate_mousse': 'Calories:  300-400 kcal  , Protein: 5 grams.', 
+    'chocolate_cake': 'Calories: 350-450 kcal , Protein: 3-5 grams.', 
+    'chicken_wings': 'Calories:  80-100 kcal , Protein: 6-8 grams.', 
+    'chicken_quesadilla': 'Calories: 300-400 kcal , Protein: 20-30 grams.', 
+    'chicken_curry': 'Calories: 200-300 kcal  , Protein: 20-30 grams.', 
+  };
 
   @override
   void initState() {
@@ -106,7 +119,7 @@ class _PlantRecogniserState extends State<PlantRecogniser> {
 
   Widget _buildTitle() {
     return const Text(
-      'Plant Recogniser',
+      'Nutrition Track',
       style: kTitleTextStyle,
       textAlign: TextAlign.center,
     );
@@ -179,16 +192,20 @@ class _PlantRecogniserState extends State<PlantRecogniser> {
 
   Widget _buildResultView() {
     var title = '';
+    var nutritionDisplay = '';
 
     if (_resultStatus == _ResultStatus.notFound) {
       title = 'Fail to recognise';
     } else if (_resultStatus == _ResultStatus.found) {
       title = _plantLabel;
+      // Check if the plant label has nutrition info and set it to display
+      if (nutritionInfo.containsKey(_plantLabel)) {
+        nutritionDisplay = nutritionInfo[_plantLabel]!;
+      }
     } else {
       title = '';
     }
 
-    //
     var accuracyLabel = '';
     if (_resultStatus == _ResultStatus.found) {
       accuracyLabel = 'Accuracy: ${(_accuracy * 100).toStringAsFixed(2)}%';
@@ -198,7 +215,36 @@ class _PlantRecogniserState extends State<PlantRecogniser> {
       children: [
         Text(title, style: kResultTextStyle),
         const SizedBox(height: 10),
-        Text(accuracyLabel, style: kResultRatingTextStyle)
+        Text(accuracyLabel, style: kResultRatingTextStyle),
+        const SizedBox(height: 10),
+        // Display the nutrition info inside a styled box
+        nutritionDisplay.isNotEmpty
+            ? Container(
+                padding: const EdgeInsets.all(10),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: kColorLightGray,
+                  borderRadius: BorderRadius.circular(10),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Text(
+                  nutritionDisplay,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: kColorHunterGreen,
+                    fontFamily: kMainFont,
+                  ),
+                ),
+              )
+            : SizedBox.shrink(),
       ],
     );
   }
